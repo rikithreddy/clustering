@@ -1,5 +1,7 @@
 import streamlit as st
 import requests
+import cv2
+import numpy as np
 from sklearn.cluster import KMeans
 
 
@@ -36,13 +38,20 @@ def sidebar(img, num_cluster):
                     st.image(img)
             except:
                 st.error("Invalid Image")
+    return img, num_cluster
 
 
 if __name__ == "__main__":
     img = None
     num_cluster = 2
     with st.sidebar:
-        sidebar(img, num_cluster)
+        img, num_cluster = sidebar(img, num_cluster)
 
     st.header("Image Segmentation Using KMeans")
     st.text("TODO: ADD project description/ how to use")
+    if img:
+
+        left, right = st.columns(2)
+        left.header("Original")
+        left.image(img)
+        st.write(cv2.imdecode(np.frombuffer(img, np.uint8), -1))
