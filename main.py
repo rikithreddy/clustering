@@ -50,8 +50,36 @@ if __name__ == "__main__":
     st.header("Image Segmentation Using KMeans")
     st.text("TODO: ADD project description/ how to use")
     if img:
-
         left, right = st.columns(2)
         left.header("Original")
         left.image(img)
-        st.write(cv2.imdecode(np.frombuffer(img, np.uint8), -1))
+
+        im = cv2.imdecode(np.frombuffer(img, np.uint8), -1)
+        im = cv2.cvtColor(im, cv2.COLOR_BGR2RGB)
+
+        x, y, z = im.shape
+        t_img = im.reshape(x * y, z)
+
+        model = KMeans(n_clusters=num_cluster)
+        model.fit(t_img)
+
+        new_clusters = []
+        for clabel in model.labels_:
+            new_clusters.append(model.cluster_centers_[clabel])
+
+        seg = np.array(new_clusters).reshape(x, y, z).astype("int")
+
+        seg_img = cv2.imencode(".png", seg)
+        right.header("Segmented colors")
+        right.image(seg)
+
+        elbow = st.checkbox("Show Elbow curve? (This can be time consuming)")
+
+        if elbow:
+            cluster_mss = []
+            k_values = range(1, 20)
+            for k in k_values:
+                kmeans = KMeans(n_clusters=k)
+                kmeans = kmeans.fit(t_img)
+                cluster_mss.append(kmeans.inertia_)
+            st.line_chart(cluster_mss)
