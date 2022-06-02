@@ -33,7 +33,7 @@ def _handle_url():
     img = None
     img_data = st.text_input(
         "URL for the image",
-        value="https://lh6.googleusercontent.com/TXpJmvrCYHRyK6gSTjYbPmYDYhu4m8wNHg22nyKYiJvMJ55hXLkY-xyNDyaLcbwh_CrjYtdsMoAAtpARdibxolo=w1280",
+        value="https://github.com/rikithreddy/clustering/raw/master/static/img.jpeg",
     )
     if img_data == "":
         return
