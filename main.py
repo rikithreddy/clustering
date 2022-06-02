@@ -1,6 +1,7 @@
 import streamlit as st
 import requests
-import cv2
+from PIL import Image
+import io
 import numpy as np
 from sklearn.cluster import KMeans
 
@@ -54,9 +55,7 @@ if __name__ == "__main__":
         left.header("Original")
         left.image(img)
 
-        im = cv2.imdecode(np.frombuffer(img, np.uint8), -1)
-        im = cv2.cvtColor(im, cv2.COLOR_BGR2RGB)
-
+        im = np.asarray(Image.open(io.BytesIO(img)))
         x, y, z = im.shape
         t_img = im.reshape(x * y, z)
 
@@ -68,8 +67,9 @@ if __name__ == "__main__":
             new_clusters.append(model.cluster_centers_[clabel])
 
         seg = np.array(new_clusters).reshape(x, y, z).astype("int")
+        PIL_image = Image.fromarray(seg.astype("uint8"), "RGB")
 
-        seg_img = cv2.imencode(".png", seg)
+        # seg_img = cv2.imencode(".png", seg)
         right.header("Segmented colors")
         right.image(seg)
 
