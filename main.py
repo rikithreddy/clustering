@@ -20,8 +20,12 @@ def _gen_mss(t_img):
 
 
 def _im_to_np(img):
-    im = Image.open(io.BytesIO(img))
-    im = np.asarray(im)
+    # basewidth = 200
+    img = Image.open(io.BytesIO(img))
+    # wpercent = basewidth / float(img.size[0])
+    # hsize = int((float(img.size[1]) * float(wpercent)))
+    # img = img.resize((basewidth, hsize), Image.ANTIALIAS)
+    im = np.asarray(img)
     return im
 
 
