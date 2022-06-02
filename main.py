@@ -78,8 +78,8 @@ def handle_sidebar():
     image_option = st.radio(
         "Upload Image",
         (
-            "URL",
             "Upload",
+            "URL",
         ),
     )
     img = handle_image(image_option)
